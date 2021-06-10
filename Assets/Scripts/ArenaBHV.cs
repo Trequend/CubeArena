@@ -291,11 +291,6 @@ public class ArenaBHV
 
     public void ForeachPair(Action<Cube, Cube> action)
     {
-        if (Count % 2 != 0)
-        {
-            return;
-        }
-
         _root.ForeachPair((firstTransform, secondTransform) =>
         {
             action(
