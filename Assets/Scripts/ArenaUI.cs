@@ -29,6 +29,7 @@ public class ArenaUI : MonoBehaviour
 
     private void OnDisable()
     {
+        HideLabel();
         _arena.NextRoundPrepared -= ShowStartNextRoundLabel;
         _arena.BattleEnded -= ShowRestartLabel;
     }
@@ -37,14 +38,14 @@ public class ArenaUI : MonoBehaviour
     {
         if (_arena.Round == 0)
         {
-            ShowActionLabel("Битва кубов", "Нажмите пробел, чтобы начать", () =>
+            ShowActionLabel("Cube arena", "Press space to start", () =>
             {
                 _arena.StartNextRound();
             });
         }
         else
         {
-            ShowActionLabel($"Раунд {_arena.Round} завершен", "Нажмите пробел, чтобы продолжить", () =>
+            ShowActionLabel($"Round {_arena.Round} is over", "Press space to continue", () =>
             {
                 _arena.StartNextRound();
             });
@@ -53,7 +54,7 @@ public class ArenaUI : MonoBehaviour
 
     private void ShowRestartLabel()
     {
-        ShowActionLabel("Битва окончена", "Нажмите пробел, чтобы перезапустить", () =>
+        ShowActionLabel("The battle is over", "Press space to restart", () =>
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
