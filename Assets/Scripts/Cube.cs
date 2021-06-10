@@ -87,12 +87,17 @@ public class Cube : MonoBehaviour
             }
             else
             {
-                Vector3.MoveTowards(transform.position, _enemy.transform.position, _speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(
+                    transform.position,
+                    _enemy.transform.position,
+                    _speed * Time.deltaTime
+                );
             }
 
             yield return null;
         }
 
+        transform.rotation = Quaternion.identity;
         _attackCoroutine = null;
         _won?.Invoke(this);
     }
@@ -103,6 +108,7 @@ public class Cube : MonoBehaviour
         if (_health <= 0.0f)
         {
             Destroy(gameObject);
+            StopAllCoroutines();
             _died?.Invoke(this);
         }
     }

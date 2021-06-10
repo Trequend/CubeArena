@@ -32,8 +32,8 @@ public class Arena : MonoBehaviour
         remove => _nextRoundPrepared -= value;
     }
 
-    private event Action<Cube> _battleEnded;
-    public event Action<Cube> BattleEnded
+    private event Action _battleEnded;
+    public event Action BattleEnded
     {
         add => _battleEnded += value;
         remove => _battleEnded -= value;
@@ -88,16 +88,14 @@ public class Arena : MonoBehaviour
             return;
         }
 
-        Cube winner = null;
         _hierarchy.Foreach(cube =>
         {
             cube.Won -= ReturnInHierarchy;
             cube.Died -= Cleanup;
-            winner = cube;
         });
         _hierarchy.Clear();
         Status = ArenaStatus.BattleEnded;
-        _battleEnded?.Invoke(winner);
+        _battleEnded?.Invoke();
     }
 
     private void PrepareNextRound()
@@ -139,4 +137,11 @@ public class Arena : MonoBehaviour
         cube.Won -= ReturnInHierarchy;
         RemoveCubeFromRound();
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        _hierarchy.DebugDraw();
+    }
+#endif
 }
