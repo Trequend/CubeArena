@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// BVH - Bounding Volume Hierarchy
+// Bounding Volume Hierarchy
 // Simplified RTree
-public class ArenaBVH
+public class ArenaHierarchy
 {
     private const int MaxEntries = 2;
 
