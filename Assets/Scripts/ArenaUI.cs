@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class ArenaUI : MonoBehaviour
 {
     [SerializeField] private Arena _arena;
+    [SerializeField] private GameObject _labelPanel;
     [SerializeField] private TMPro.TextMeshProUGUI _label;
     [SerializeField] private TMPro.TextMeshProUGUI _hint;
 
@@ -43,7 +44,7 @@ public class ArenaUI : MonoBehaviour
         }
         else
         {
-            ShowActionLabel($"Раунд {_arena.Round} окончен", "Нажмите пробел, чтобы продолжить", () =>
+            ShowActionLabel($"Раунд {_arena.Round} завершен", "Нажмите пробел, чтобы продолжить", () =>
             {
                 _arena.StartNextRound();
             });
@@ -60,10 +61,10 @@ public class ArenaUI : MonoBehaviour
 
     private void ShowActionLabel(string text, string hint, Action action)
     {
-        _label.gameObject.SetActive(true);
-        _hint.gameObject.SetActive(true);
+        _labelPanel.SetActive(true);
         _label.text = text;
         _hint.text = hint;
+        StopAllCoroutines();
         StartCoroutine(WaitSpaceKey(action));
     }
 
@@ -80,7 +81,6 @@ public class ArenaUI : MonoBehaviour
 
     private void HideLabel()
     {
-        _label.gameObject.SetActive(false);
-        _hint.gameObject.SetActive(false);
+        _labelPanel.SetActive(false);
     }
 }

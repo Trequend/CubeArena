@@ -112,4 +112,18 @@ public class Cube : MonoBehaviour
             _died?.Invoke(this);
         }
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Color temp = Gizmos.color;
+        Gizmos.color = Color.cyan;
+        if (_enemy != null)
+        {
+            Gizmos.DrawLine(transform.position, _enemy.transform.position);
+        }
+
+        Gizmos.color = temp;
+    }
+#endif
 }
