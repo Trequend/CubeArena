@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class Arena : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class Arena : MonoBehaviour
             return;
         }
 
+        Profiler.BeginSample("Adding cubes in hierarchy");
         for (int i = 0; i < childCount; i++)
         {
             if (transform.GetChild(i).TryGetComponent(out Cube cube))
@@ -58,11 +60,7 @@ public class Arena : MonoBehaviour
                 Attach(cube);
             }
         }
-
-        if (childCount == 0)
-        {
-            return;
-        }
+        Profiler.EndSample();
 
         PrepareNextRound();
     }
@@ -123,11 +121,13 @@ public class Arena : MonoBehaviour
 
     private void PrepareNextRound()
     {
+        Profiler.BeginSample("Linking cubes");
         _hierarchy.ForeachPair((firstCube, secondCube) =>
         {
             firstCube.SetEnemy(secondCube);
             secondCube.SetEnemy(firstCube);
         });
+        Profiler.EndSample();
 
         _cubesCountInRound = _hierarchy.Count;
         Status = ArenaStatus.NextRoundPrepared;
