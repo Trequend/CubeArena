@@ -10,7 +10,7 @@ public class Arena : MonoBehaviour
 
     public int Round { get; private set; }
 
-    public ArenaStatus Status { get; private set; }
+    public ArenaState State { get; private set; }
 
     private event Action _roundStarted;
     public event Action RoundStarted
@@ -47,7 +47,7 @@ public class Arena : MonoBehaviour
         if (!IsPowerOfTwo(childCount))
         {
             Debug.LogError("Cube count must be power of 2");
-            Status = ArenaStatus.NotInitialized;
+            State = ArenaState.NotInitialized;
             return;
         }
 
@@ -93,10 +93,10 @@ public class Arena : MonoBehaviour
 
     private void EndRound()
     {
-        Status = ArenaStatus.RoundEnded;
+        State = ArenaState.RoundEnded;
         _roundEnded?.Invoke();
         TryEndBattle();
-        if (Status != ArenaStatus.BattleEnded)
+        if (State != ArenaState.BattleEnded)
         {
             PrepareNextRound();
         }
@@ -115,7 +115,7 @@ public class Arena : MonoBehaviour
             cube.Died -= Cleanup;
         });
         _hierarchy.Clear();
-        Status = ArenaStatus.BattleEnded;
+        State = ArenaState.BattleEnded;
         _battleEnded?.Invoke();
     }
 
@@ -130,13 +130,13 @@ public class Arena : MonoBehaviour
         Profiler.EndSample();
 
         _cubesCountInRound = _hierarchy.Count;
-        Status = ArenaStatus.NextRoundPrepared;
+        State = ArenaState.NextRoundPrepared;
         _nextRoundPrepared?.Invoke();
     }
 
     public void StartNextRound()
     {
-        if (Status != ArenaStatus.NextRoundPrepared)
+        if (State != ArenaState.NextRoundPrepared)
         {
             return;
         }
@@ -144,7 +144,7 @@ public class Arena : MonoBehaviour
         Round++;
         _hierarchy.Foreach(cube => cube.AttackEnemy());
         _hierarchy.Clear();
-        Status = ArenaStatus.RoundStarted;
+        State = ArenaState.RoundStarted;
         _roundStarted?.Invoke();
     }
 

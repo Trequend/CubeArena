@@ -1,4 +1,4 @@
-﻿public enum ArenaStatus
+﻿public enum ArenaState
 {
     NotInitialized,
     RoundStarted,

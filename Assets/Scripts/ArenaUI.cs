@@ -13,12 +13,12 @@ public class ArenaUI : MonoBehaviour
     private void OnEnable()
     {
         HideLabel();
-        switch (_arena.Status)
+        switch (_arena.State)
         {
-            case ArenaStatus.NextRoundPrepared:
+            case ArenaState.NextRoundPrepared:
                 ShowStartNextRoundLabel();
                 break;
-            case ArenaStatus.BattleEnded:
+            case ArenaState.BattleEnded:
                 ShowRestartLabel();
                 break;
         }
