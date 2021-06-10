@@ -4,7 +4,7 @@ using UnityEngine.Profiling;
 
 public class Arena : MonoBehaviour
 {
-    private readonly ArenaBHV _hierarchy = new ArenaBHV();
+    private readonly ArenaBVH _hierarchy = new ArenaBVH();
 
     private int _cubesCountInRound;
 
