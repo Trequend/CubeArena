@@ -91,11 +91,6 @@ public class ArenaHierarchy
                 Level++;
                 _records.Clear();
                 _records.AddRange(split.Records);
-                _boundingBox = AABB.CreateEmpty();
-                foreach (Record record in split.Records)
-                {
-                    _boundingBox = AABB.Merge(_boundingBox, record.BoundingBox);
-                }
             }
         }
 
@@ -173,11 +168,6 @@ public class ArenaHierarchy
 
             _records.RemoveAt(recordIndex);
             _records.AddRange(split.Records);
-            foreach (Record record in split.Records)
-            {
-                _boundingBox = AABB.Merge(_boundingBox, record.BoundingBox);
-            }
-
             return _records.Count > MaxEntries ? new NodeSplit(this) : null;
         }
 
