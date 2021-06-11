@@ -42,16 +42,27 @@ public class Arena : MonoBehaviour
 
     private void Start()
     {
-        Transform transform = GetComponent<Transform>();
-        int childCount = transform.childCount;
-        if (!IsPowerOfTwo(childCount))
+        if (!IsPowerOfTwo(transform.childCount))
         {
             Debug.LogError("Cube count must be power of 2");
             State = ArenaState.NotInitialized;
             return;
         }
 
+        CollectCubes();
+        PrepareNextRound();
+    }
+
+    private bool IsPowerOfTwo(int x)
+    {
+        return x > 0 && (x & (x - 1)) == 0;
+    }
+
+    private void CollectCubes()
+    {
         Profiler.BeginSample("Adding cubes in hierarchy");
+        Transform transform = GetComponent<Transform>();
+        int childCount = transform.childCount;
         for (int i = 0; i < childCount; i++)
         {
             if (transform.GetChild(i).TryGetComponent(out Cube cube))
@@ -61,8 +72,6 @@ public class Arena : MonoBehaviour
             }
         }
         Profiler.EndSample();
-
-        PrepareNextRound();
     }
 
     private void Attach(Cube cube)
@@ -75,20 +84,6 @@ public class Arena : MonoBehaviour
     {
         cube.Won -= ReturnInHierarchy;
         cube.Died -= Cleanup;
-    }
-
-    private bool IsPowerOfTwo(int x)
-    {
-        return x > 0 && (x & (x - 1)) == 0;
-    }
-
-    private void RemoveCubeFromRound()
-    {
-        _cubesCountInRound--;
-        if (_cubesCountInRound == 0)
-        {
-            EndRound();
-        }
     }
 
     private void EndRound()
@@ -158,6 +153,15 @@ public class Arena : MonoBehaviour
     {
         Detach(cube);
         RemoveCubeFromRound();
+    }
+
+    private void RemoveCubeFromRound()
+    {
+        _cubesCountInRound--;
+        if (_cubesCountInRound == 0)
+        {
+            EndRound();
+        }
     }
 
 #if UNITY_EDITOR
