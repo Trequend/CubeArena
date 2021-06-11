@@ -104,11 +104,7 @@ public class Arena : MonoBehaviour
             return;
         }
 
-        _hierarchy.Foreach(cube =>
-        {
-            cube.Won -= ReturnInHierarchy;
-            cube.Died -= Cleanup;
-        });
+        _hierarchy.Foreach(Detach);
         _hierarchy.Clear();
         State = ArenaState.BattleEnded;
         _battleEnded?.Invoke();
