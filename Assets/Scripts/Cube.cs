@@ -75,7 +75,8 @@ public class Cube : MonoBehaviour
         transform.LookAt(_enemy.transform);
         while (_enemy != null)
         {
-            if (Vector3.Distance(transform.position, _enemy.transform.position) <= _attackDistance)
+            float distance = Vector3.Distance(transform.position, _enemy.transform.position);
+            if (distance <= _attackDistance)
             {
                 timer -= Time.deltaTime;
                 if (timer <= 0.0f)
@@ -99,6 +100,7 @@ public class Cube : MonoBehaviour
 
         transform.rotation = Quaternion.identity;
         _attackCoroutine = null;
+        SetEnemy(null);
         _won?.Invoke(this);
     }
 
@@ -107,22 +109,28 @@ public class Cube : MonoBehaviour
         _health -= damage.Value;
         if (_health <= 0.0f)
         {
-            Destroy(gameObject);
-            StopAllCoroutines();
-            _died?.Invoke(this);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        SetEnemy(null);
+        Destroy(gameObject);
+        _died?.Invoke(this);
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Color temp = Gizmos.color;
-        Gizmos.color = Color.cyan;
-        if (_enemy != null)
+        if (_enemy == null)
         {
-            Gizmos.DrawLine(transform.position, _enemy.transform.position);
+            return;
         }
 
+        Color temp = Gizmos.color;
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, _enemy.transform.position);
         Gizmos.color = temp;
     }
 #endif

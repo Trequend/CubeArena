@@ -14,9 +14,9 @@ public struct Damage
         Value = value;
     }
 
-    public static Damage FromVariation(float minValue, float valueVariation)
+    public static Damage FromVariation(float minValue, float variation)
     {
-        float value = minValue + UnityEngine.Random.Range(0.0f, valueVariation);
+        float value = minValue + UnityEngine.Random.Range(0.0f, variation);
         return new Damage(value);
     }
 }
